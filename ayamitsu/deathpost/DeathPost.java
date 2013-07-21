@@ -1,9 +1,12 @@
 package ayamitsu.deathpost;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.ChatMessageComponent;
 
 import ayamitsu.util.io.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -18,7 +21,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 	modid = "ayamitsu.deathpost",
 	name = "DeathPost",
-	version = "0.1.0"
+	version = "0.1.1"
 )
 @NetworkMod(
 	clientSideRequired = true,
@@ -33,16 +36,14 @@ public class DeathPost
 	@SidedProxy(clientSide = "ayamitsu.deathpost.client.ClientProxy", serverSide = "ayamitsu.deathpost.server.ServerProxy")
 	public static Proxy proxy;
 
-	public static String MSG_CHANNEL = "deathpost.msg";
+	public static final String MSG_CHANNEL = "deathpost.msg";
 
 	public static String head = "";
 	public static String bottom = "";
 
-	@Mod.PreInit
+	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		// TODO:
-
 		if (event.getSide().isClient())
 		{
 			Configuration conf = new Configuration(event.getSuggestedConfigurationFile());
@@ -70,7 +71,7 @@ public class DeathPost
 		}
 	}
 
-	@Mod.Init
+	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)
 	{
 		this.proxy.load();
@@ -85,9 +86,13 @@ public class DeathPost
 	 * call on EntityPlayerMP class onDeath method
 	 * insert by coremods
 	 */
-	public static void sendDeathMsgToClient(EntityPlayerMP player, String msg)
+	public static void sendDeathMsgToClient(EntityPlayerMP player, ChatMessageComponent msg)
 	{
-		player.playerNetServerHandler.sendPacketToPlayer(new Packet250CustomPayload("deathpost.msg", msg.getBytes()));
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = MSG_CHANNEL;
+		packet.data = msg.func_111062_i().getBytes();
+		packet.length = packet.data.length;
+		player.playerNetServerHandler.sendPacketToPlayer(packet);
 	}
 
 }

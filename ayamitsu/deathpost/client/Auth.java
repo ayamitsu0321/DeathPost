@@ -5,6 +5,8 @@ import java.net.URI;
 import java.lang.IllegalStateException;
 import java.io.*;
 
+import cpw.mods.fml.common.Loader;
+
 import net.minecraft.util.StatCollector;
 
 import twitter4j.*;
@@ -237,7 +239,7 @@ public class Auth
 
 	public File getDir()
 	{
-		return new File(net.minecraft.client.Minecraft.getMinecraftDir(), "mods/deathpost");
+		return new File(Loader.instance().getConfigDir(), "/deathpost");
 	}
 
 	public File getFile()

@@ -13,7 +13,7 @@ public class ModContainer extends DummyModContainer {
 		ModMetadata meta = this.getMetadata();
 		meta.modId       = "ayamitsu.deathpostplugin";
 		meta.name        = "DeathPostPlugin";
-		meta.version     = "0.1.0";
+		meta.version     = "0.1.1";
 		meta.authorList  = Arrays.asList("ayamitsu");
 		meta.description = "";
 		meta.url         = "";

@@ -1,6 +1,8 @@
 package ayamitsu.deathpost.asm;
 
-import java.io.IOException;
+import java.util.List;
+
+import net.minecraft.launchwrapper.IClassTransformer;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -12,8 +14,9 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import ayamitsu.util.reflect.Reflector;
+
 import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
-import cpw.mods.fml.relauncher.IClassTransformer;
 
 public class TransformerEntityPlayerMP implements IClassTransformer, Opcodes
 {
@@ -36,18 +39,17 @@ public class TransformerEntityPlayerMP implements IClassTransformer, Opcodes
 		ClassReader cReader = new ClassReader(arrayOfByte);
 		cReader.accept(cNode, 0);
 
-		for (MethodNode mNode : cNode.methods)
+		for (MethodNode mNode : (List<MethodNode>)cNode.methods)
 		{
 			// void onDeath(DamageSource) | void func_70645_a(DamageSource)
 			if ("onDeath".equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(cNode.name, mNode.name, mNode.desc)) && "(Lnet/minecraft/util/DamageSource;)V".equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodDesc(mNode.desc)))
 			{
 				InsnList insnList = new InsnList();
-				// ayamitsu.deathpost.DeathPost.sendDeathMsgToClient(this, this.field_94063_bt.func_94546_b());
 				insnList.add(new VarInsnNode(ALOAD, 0));// this
 				insnList.add(new VarInsnNode(ALOAD, 0));// this
-				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/entity/player/EntityPlayerMP", "field_94063_bt", "Lnet/minecraft/util/CombatTracker;"));
-				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/util/CombatTracker", "func_94546_b", "()Ljava/lang/String;"));
-				insnList.add(new MethodInsnNode(INVOKESTATIC, "ayamitsu/deathpost/DeathPost", "sendDeathMsgToClient", "(Lnet/minecraft/entity/player/EntityPlayerMP;Ljava/lang/String;)V"));
+				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/entity/player/EntityPlayerMP", "func_110142_aN", "()Lnet/minecraft/util/CombatTracker;"));
+				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/util/CombatTracker", "func_94546_b", "()Lnet/minecraft/util/ChatMessageComponent;"));
+				insnList.add(new MethodInsnNode(INVOKESTATIC, "ayamitsu/deathpost/DeathPost", "sendDeathMsgToClient", "(Lnet/minecraft/entity/player/EntityPlayerMP;Lnet/minecraft/util/ChatMessageComponent;)V"));
 				mNode.instructions.insertBefore(mNode.instructions.getLast().getPrevious(), insnList);
 			}
 		}

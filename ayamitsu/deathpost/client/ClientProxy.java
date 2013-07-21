@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.ChatMessageComponent;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -32,7 +33,7 @@ public class ClientProxy extends Proxy
 	{
 		if (DeathPost.MSG_CHANNEL == packet.channel)
 		{
-			this.auth.post(new String(packet.data), DeathPost.head, DeathPost.bottom);
+			this.auth.post(ChatMessageComponent.func_111078_c(new String(packet.data)).func_111068_a(true), DeathPost.head, DeathPost.bottom);
 		}
 	}
 

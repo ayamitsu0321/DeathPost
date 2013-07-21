@@ -1,7 +1,4 @@
-【MOD】DeathPost-v0.1.0
-
-【開発時のMinecraftのバージョン】
-1.5.2
+【MOD】DeathPost-1.6.2-v0.1.1
 
 【概要】
 プレイヤーが死んだらTwitterで死んだ回数と死因をつぶやくMODです。
@@ -29,7 +26,7 @@ Java1.6、ブラウザがGoogleChromeの環境では確認済みです。
 
 
 【前提MOD&ライブラリ】
-・FML(開発時は686)
+・FML(開発時は790)
 ・twitter4j(開発時は3.0.3) 
     
     Twitter4jについて
