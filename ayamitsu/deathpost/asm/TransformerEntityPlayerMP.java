@@ -42,7 +42,7 @@ public class TransformerEntityPlayerMP implements IClassTransformer, Opcodes
 		for (MethodNode mNode : (List<MethodNode>)cNode.methods)
 		{
 			// void onDeath(DamageSource) | void func_70645_a(DamageSource)
-			if ("onDeath".equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(cNode.name, mNode.name, mNode.desc)) && "(Lnet/minecraft/util/DamageSource;)V".equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodDesc(mNode.desc)))
+			if ((Reflector.isRenameTable() ? "onDeath" : "func_70645_a").equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(cNode.name, mNode.name, mNode.desc)) && "(Lnet/minecraft/util/DamageSource;)V".equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodDesc(mNode.desc)))
 			{
 				InsnList insnList = new InsnList();
 				insnList.add(new VarInsnNode(ALOAD, 0));// this
